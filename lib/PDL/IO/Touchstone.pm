@@ -621,8 +621,8 @@ sub s_to_abcd
 	my $z01 = $Z_ref->slice(0,0)->reshape(1);
 	my $z02 = $Z_ref->slice(1,1)->reshape(1);
 
-	my $z01_conj = $z01->conj;
-	my $z02_conj = $z02->conj;
+	my $z01_conj = $z01->type->real ? $z01 : $z01->conj;
+	my $z02_conj = $z02->type->real ? $z02 : $z02->conj;
 
 	my ($S11, $S12, $S21, $S22) = m_to_pos_vecs($S);
 
@@ -682,8 +682,8 @@ sub abcd_to_s
 	my $z01 = $Z_ref->slice(0,0)->reshape(1);
 	my $z02 = $Z_ref->slice(1,1)->reshape(1);
 
-	my $z01_conj = $z01->conj;
-	my $z02_conj = $z02->conj;
+	my $z01_conj = $z01->type->real ? $z01 : $z01->conj;
+	my $z02_conj = $z02->type->real ? $z02 : $z02->conj;
 
 	my ($A, $B, $C, $D) = m_to_pos_vecs($ABCD);
 
