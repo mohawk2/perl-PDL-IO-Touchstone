@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 use strict;
 use warnings;
 
@@ -24,7 +22,7 @@ use PDL::IO::Touchstone qw/rsnp
 	/;
 use File::Temp qw/tempfile/;
 
-use Test::More tests => 263;
+use Test::More;
 
 my $tolerance = 1e-3;
 
@@ -156,6 +154,8 @@ foreach my $fn (@files, @ARGV)
 =cut
 
 }
+
+done_testing;
 
 sub verify_one
 {

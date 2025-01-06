@@ -33,7 +33,7 @@ my %WriteMakefileArgs = (
         'ExtUtils::MakeMaker' => '0',
     },
     TEST_REQUIRES => {
-        'Test::More' => '0',
+	'Test::More' => '0.88', # done_testing
 	'File::Temp' => '0',
 	%REQUIRES
     },

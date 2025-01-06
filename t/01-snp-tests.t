@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 use strict;
 use warnings;
 
@@ -7,7 +5,7 @@ use PDL;
 use PDL::IO::Touchstone;
 use File::Temp qw/tempfile/;
 
-use Test::More tests => 200;
+use Test::More;
 
 # Cumulative error in PDL-to-perl-scalar conversion for long-double builds
 # requires a lower tolerance.  To prevent failing builds just because of
@@ -95,3 +93,5 @@ sub verify
 }
 
 unlink($fn);
+
+done_testing;

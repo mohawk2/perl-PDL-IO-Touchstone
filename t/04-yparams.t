@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 use strict;
 use warnings;
 
@@ -7,7 +5,7 @@ use PDL;
 use PDL::IO::Touchstone qw/rsnp s_to_y y_to_s /;
 use File::Temp qw/tempfile/;
 
-use Test::More tests => 10;
+use Test::More;
 
 # Cumulative error in PDL-to-perl-scalar conversion for long-double builds
 # requires a lower tolerance.  To prevent failing builds just because of
@@ -78,3 +76,4 @@ sub verify_one
 	ok($im_err < $tolerance, "$file: imag error ($im_err) < $tolerance");
 }
 
+done_testing;

@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 use strict;
 use warnings;
 
@@ -7,7 +5,7 @@ use PDL;
 use PDL::IO::Touchstone qw/rsnp s_port_z n_ports/;
 use File::Temp qw/tempfile/;
 
-use Test::More tests => 4;
+use Test::More;
 
 my $tolerance = 1e-6;
 
@@ -40,3 +38,4 @@ foreach my $fn (qw(t/test-data/IDEAL_SHORT.s2p))
 	}
 }
 
+done_testing;

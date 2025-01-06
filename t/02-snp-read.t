@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 use strict;
 use warnings;
 
@@ -7,7 +5,7 @@ use PDL;
 use PDL::IO::Touchstone;
 use File::Temp qw/tempfile/;
 
-use Test::More tests => 1;
+use Test::More;
 
 my ($fh, $fn) = tempfile();
 
@@ -35,3 +33,5 @@ my $err = $@ // '';
 ok(scalar(@ret), "unusual first line numeric values ($err)");
 
 unlink($fn);
+
+done_testing;

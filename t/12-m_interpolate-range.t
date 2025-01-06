@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 use strict;
 use warnings;
 
@@ -7,7 +5,7 @@ use PDL;
 use PDL::IO::Touchstone qw/rsnp m_interpolate f_is_uniform /;
 use File::Temp qw/tempfile/;
 
-use Test::More tests => 8;
+use Test::More;
 my $tolerance = 1e-6;
 
 my ($f, $m, $param_type, $z0, $comments, $fmt, $funit, $orig_f_unit) = rsnp('t/test-data/cha3024-99f-lna.s2p');
@@ -47,3 +45,4 @@ sub verify_one
 	ok($im_err < $tolerance, "$file: imag error ($im_err) < $tolerance");
 }
 
+done_testing;

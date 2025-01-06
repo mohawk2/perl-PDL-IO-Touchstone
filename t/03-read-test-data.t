@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 use strict;
 use warnings;
 
@@ -7,9 +5,7 @@ use PDL;
 use PDL::IO::Touchstone;
 use File::Temp qw/tempfile/;
 
-
-use Test::More tests => 4;
-
+use Test::More;
 
 my $datadir = 't/test-data';
 
@@ -24,3 +20,5 @@ foreach my $fn (@files)
 	#print $m . "\n";
 	ok($f->nelem > 0 && $m->nelem > 0, "$datadir/$fn");
 }
+
+done_testing;

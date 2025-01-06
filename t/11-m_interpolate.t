@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 use strict;
 use warnings;
 
@@ -7,7 +5,7 @@ use PDL;
 use PDL::IO::Touchstone qw/rsnp m_interpolate f_is_uniform /;
 use File::Temp qw/tempfile/;
 
-use Test::More tests => 10;
+use Test::More;
 
 # For each file, rescale the frequency range smaller by 1kHz and then grow it
 # back to see if the values are close.  Tolerance is a bit low, but thats ok
@@ -60,3 +58,4 @@ sub verify_one
 	ok($im_err < $tolerance, "$file: imag error ($im_err) < $tolerance");
 }
 
+done_testing;

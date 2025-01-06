@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 use strict;
 use warnings;
 
@@ -7,7 +5,7 @@ use PDL;
 use PDL::IO::MDIF;
 use File::Temp qw/tempfile/;
 
-use Test::More tests => 743;
+use Test::More;
 
 my $tolerance = 1e-6;
 
@@ -55,3 +53,5 @@ sub verify_one
 	ok($re_err < $tolerance, "$file: real error ($re_err) < $tolerance");
 	ok($im_err < $tolerance, "$file: imag error ($im_err) < $tolerance");
 }
+
+done_testing;

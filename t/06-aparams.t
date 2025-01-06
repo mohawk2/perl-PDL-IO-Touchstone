@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 use strict;
 use warnings;
 
@@ -7,7 +5,7 @@ use PDL;
 use PDL::IO::Touchstone qw/rsnp s_to_abcd abcd_to_s /;
 use File::Temp qw/tempfile/;
 
-use Test::More tests => 8;
+use Test::More;
 
 my $tolerance = 1e-6;
 
@@ -68,3 +66,4 @@ sub verify_one
 	ok($im_err < $tolerance, "$file: imag error ($im_err) < $tolerance");
 }
 
+done_testing;
