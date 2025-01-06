@@ -24,7 +24,7 @@ use File::Temp qw/tempfile/;
 
 use Test::More;
 
-my $tolerance = 1e-3;
+use Test::PDL -atol => 1e-3;
 
 my $datadir = 't/test-data/muRata';
 
@@ -99,7 +99,7 @@ foreach my $fn (@files, @ARGV)
 	foreach my $v (sort keys %$ref_vals)
 	{
 		my $value = $vals{$v} // '(undef)';
-		verify_one($ref_vals->{$v}, $vals{$v}, "$fn: $v=$value");
+		is_pdl $vals{$v}//pdl([0]), pdl([$ref_vals->{$v}]), "$fn: $v=$value";
 	}
 
 	# Parallel and series calculations on ferrite beads don't always behave
@@ -115,16 +115,16 @@ foreach my $fn (@files, @ARGV)
 
 	if ($vals{cap} > 0)
 	{
-		verify_one($pp_vals{cap}, $vals{cap}*2, "$fn: cap: parallel");
-		verify_one($ss_vals{cap}, $vals{cap}/2, "$fn: cap: series");
+		is_pdl $pp_vals{cap}, $vals{cap}*2, "$fn: cap: parallel";
+		is_pdl $ss_vals{cap}, $vals{cap}/2, "$fn: cap: series";
 
 		ok($vals{Qc} > 0, "$fn: capacitive reactance");
 	}
 
 	if ($vals{ind} > 0)
 	{
-		verify_one($pp_vals{ind}, $vals{ind}/2, "$fn: ind: parallel");
-		verify_one($ss_vals{ind}, $vals{ind}*2, "$fn: ind: series");
+		is_pdl $pp_vals{ind}, $vals{ind}/2, "$fn: ind: parallel";
+		is_pdl $ss_vals{ind}, $vals{ind}*2, "$fn: ind: series";
 		ok($vals{Ql} > 0, "$fn: inductive reactance");
 	}
 
@@ -156,23 +156,6 @@ foreach my $fn (@files, @ARGV)
 }
 
 done_testing;
-
-sub verify_one
-{
-	my ($m, $inverse, $msg) = @_;
-
-
-	ok((defined($m) && defined($inverse)) || (!defined($m) && !defined($inverse)),
-		"$msg: " . (defined($m) ? 'defined' : 'undef'));
-
-	return if (!defined($m) || !defined($inverse));
-
-	my $re_err = sum(($m-$inverse)->re->abs);
-	my $im_err = sum(($m-$inverse)->im->abs);
-
-	ok($re_err < $tolerance, "$msg: real error ($re_err) < $tolerance");
-	ok($im_err < $tolerance, "$msg: imag error ($im_err) < $tolerance");
-}
 
 sub build_vals
 {

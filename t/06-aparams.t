@@ -7,7 +7,7 @@ use File::Temp qw/tempfile/;
 
 use Test::More;
 
-my $tolerance = 1e-6;
+use Test::PDL -atol => 1e-6;
 
 my $datadir = 't/test-data';
 
@@ -33,8 +33,8 @@ my $A = pdl [
 		]
 	];
 
-verify_one(s_to_abcd($S, 50), $A, "(builtin)");
-verify_one(abcd_to_s($A, 50), $S, "(builtin)");
+is_pdl s_to_abcd($S, 50), $A, {require_equal_types=>0, test_name=>"(builtin)"};
+is_pdl abcd_to_s($A, 50), $S, {require_equal_types=>0, test_name=>"(builtin)"};
 
 foreach my $fn (@files, @ARGV)
 {
@@ -48,22 +48,9 @@ foreach my $fn (@files, @ARGV)
 sub verify
 {
 	my ($m, $z0, $file, $f, $f_inv) = @_;
-
 	my $result = $f->($m, $z0);
 	my $inverse = $f_inv->($result, $z0);
-	
-	return verify_one($m, $inverse, $file);
-}
-
-sub verify_one
-{
-	my ($m, $inverse, $file) = @_;
-
-	my $re_err = sum(($m-$inverse)->re->abs);
-	my $im_err = sum(($m-$inverse)->im->abs);
-
-	ok($re_err < $tolerance, "$file: real error ($re_err) < $tolerance");
-	ok($im_err < $tolerance, "$file: imag error ($im_err) < $tolerance");
+	is_pdl $m, $inverse, {require_equal_types=>0, test_name=>$file}; # coming back as cldouble AND cdouble, error?
 }
 
 done_testing;

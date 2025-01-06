@@ -16,7 +16,7 @@ use Test::More;
 # See here: https://github.com/PDLPorters/pdl/issues/405
 # and here: https://github.com/ebaudrez/Test-PDL/wiki/Rationale:-tolerances
 
-my $tolerance = 1e-6;
+use Test::PDL -atol => 1e-6;
 my ($fh, $fn) = tempfile();
 
 # This test iterates over a number of port sizes and output format types
@@ -86,10 +86,9 @@ sub verify
 {
 	my ($n_ports, $fmt1, $fmt2, $fmt_in, $m1, $m, $f, $f1, $orig_funit) = @_;
 
-	ok ( $fmt2 eq $fmt_in, "n_ports=$n_ports ($orig_funit) $fmt1 => $fmt2: format is equal");
-	ok ( sum($m1 - $m)->re < $tolerance, "n_ports=$n_ports ($orig_funit) $fmt1 => $fmt2: matrix real: error is < $tolerance");
-	ok ( sum($m1 - $m)->im < $tolerance, "n_ports=$n_ports ($orig_funit) $fmt1 => $fmt2: matrix imag: error is < $tolerance");
-	ok ( sum($f1 - $f) < $tolerance, "n_ports=$n_ports ($orig_funit) $fmt1 => $fmt2: freq: error is < $tolerance");
+	is $fmt2, $fmt_in, "n_ports=$n_ports ($orig_funit) $fmt1 => $fmt2: format is equal";
+	is_pdl $m1, $m, "n_ports=$n_ports ($orig_funit) $fmt1 => $fmt2: matrix real: error is < tolerance";
+	is_pdl $f1, $f->squeeze, "n_ports=$n_ports ($orig_funit) $fmt1 => $fmt2: freq: error is < tolerance";
 }
 
 unlink($fn);

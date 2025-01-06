@@ -34,6 +34,7 @@ my %WriteMakefileArgs = (
     },
     TEST_REQUIRES => {
 	'Test::More' => '0.88', # done_testing
+	'Test::PDL' => '0.21',
 	'File::Temp' => '0',
 	%REQUIRES
     },

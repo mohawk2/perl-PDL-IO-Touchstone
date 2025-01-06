@@ -10,7 +10,7 @@ use Test::More;
 # For each file, rescale the frequency range smaller by 1kHz and then grow it
 # back to see if the values are close.  Tolerance is a bit low, but thats ok
 # because we know we are probably interpolating outside of frequency ranges:
-my $tolerance = 1e-3;
+use Test::PDL -atol => 1e-6;
 
 my $datadir = 't/test-data';
 
@@ -41,21 +41,10 @@ foreach my $fn (@files, @ARGV)
 	my ($f2, $m2) = m_interpolate($f_new, $m_new,
 		{ freq_range => "$f_min - $f_max x$f_count", quiet => 1 });
 
-	verify_one($f, $f2, "$fn: f");
-	verify_one($m, $m2, "$fn: m");
+	is_pdl $f, $f2, "$fn: f";
+	is_pdl $m, $m2, "$fn: m";
 
 	ok($f->nelem == $f_new->nelem && $f->nelem == $f2->nelem, "$fn: correct freq counts");
-}
-
-sub verify_one
-{
-	my ($m, $inverse, $file) = @_;
-
-	my $re_err = sum(($m-$inverse)->re->abs);
-	my $im_err = sum(($m-$inverse)->im->abs);
-
-	ok($re_err < $tolerance, "$file: real error ($re_err) < $tolerance");
-	ok($im_err < $tolerance, "$file: imag error ($im_err) < $tolerance");
 }
 
 done_testing;

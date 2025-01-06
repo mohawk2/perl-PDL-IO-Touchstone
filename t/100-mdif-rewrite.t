@@ -6,10 +6,7 @@ use PDL::IO::MDIF;
 use File::Temp qw/tempfile/;
 
 use Test::More;
-
-my $tolerance = 1e-6;
-
-use Data::Dumper;
+use Test::PDL -atol => 1e-6;
 
 my ($fh, $fn) = tempfile();
 END {close $fh; unlink $fn};
@@ -31,27 +28,14 @@ for (my $i = 0; $i < @$mdf; $i++)
 	ok($$m1 != $$m2, "m refs are different");
 	ok($$z01 != $$z02, "z0 refs are different");
 
-	verify_one($f1, $f2, "freqs");
-	verify_one($m1, $m2, "matrix");
-	verify_one($z01, $z02, "z0");
+	is_pdl $f1, $f2, "freqs";
+	is_pdl $m1, $m2, "matrix";
+	is_pdl $z01, $z02, "z0";
 
 	foreach my $n (qw/param_type comments fmt funit orig_f_unit/)
 	{
 		ok(eval "qq{\$${n}1} eq qq{\$${n}2}", "$n is correct");
 	}
-}
-
-#print Dumper $mdf;
-
-sub verify_one
-{
-	my ($m, $inverse, $file) = @_;
-
-	my $re_err = sum(($m-$inverse)->re->abs);
-	my $im_err = sum(($m-$inverse)->im->abs);
-
-	ok($re_err < $tolerance, "$file: real error ($re_err) < $tolerance");
-	ok($im_err < $tolerance, "$file: imag error ($im_err) < $tolerance");
 }
 
 done_testing;
